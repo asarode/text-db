@@ -1,0 +1,24 @@
+{
+  "name": "text-db",
+  "version": "0.0.0",
+  "description": "A simple way to store persistent data for node cli tools.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asarode/text-db.git"
+  },
+  "keywords": [
+    "cli",
+    "npm",
+    "database"
+  ],
+  "author": "Arjun Sarode <sarodearjun57@gmail.com> (http://arjun.ink/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asarode/text-db/issues"
+  },
+  "homepage": "https://github.com/asarode/text-db"
+}
