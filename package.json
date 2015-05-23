@@ -1,6 +1,6 @@
 {
   "name": "text-db",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A simple way to store persistent data for node cli tools.",
   "main": "index.js",
   "scripts": {
@@ -21,8 +21,7 @@
     "url": "https://github.com/asarode/text-db/issues"
   },
   "homepage": "https://github.com/asarode/text-db",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "mocha": "^2.2.5"
   }
