@@ -4,7 +4,7 @@
   "description": "A simple way to store persistent data for node cli tools.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha -u tdd"
+    "test": "node_modules/.bin/mocha -u tdd -w"
   },
   "repository": {
     "type": "git",
