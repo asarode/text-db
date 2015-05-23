@@ -21,7 +21,9 @@
     "url": "https://github.com/asarode/text-db/issues"
   },
   "homepage": "https://github.com/asarode/text-db",
-  "dependencies": {},
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  },
   "devDependencies": {
     "mocha": "^2.2.5"
   }
