@@ -4,7 +4,7 @@
   "description": "A simple way to store persistent data for node cli tools.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha -u tdd"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/asarode/text-db/issues"
   },
-  "homepage": "https://github.com/asarode/text-db"
+  "homepage": "https://github.com/asarode/text-db",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "assert": "^1.3.0",
+    "mocha": "^2.2.5"
+  }
 }

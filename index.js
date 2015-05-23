@@ -1,42 +1,55 @@
-module.exports = {
+var fs = require('fs');
+var path = require('path');
 
-	setStorageFile: function(pathToFile) {
+module.exports = function(dir) {
+	var dir = dir || path.join(process.cwd(), 'storage');
+	var file = path.join(dir, 'storage.json');
+	var dataObj = {};
+	fs.readFile(file, function(err, data) {
+		dataObj = JSON.parse(data);
+	});
 
-	},
+	return {
 
-	getStorageFile: function() {
+		setStorageFile: function(pathToFile) {
+			file = pathToFile;
+		},
 
-	},
+		getStorageFile: function() {
+			return file;
+		},
 
-	getStorageFileName: function() {
+		setItem: function(key, value) {
+			dataObj[key] = value;
+			var dataObjStr = JSON.stringify(dataObj);
 
-	},
+			fs.writeFile(file, dataObjStr, function(err) {
+				if (err) throw err;
+			});
+		},
 
-	setItem: function(key, value) {
+		getItem: function(key) {
+			return dataObj[key];
+		},
 
-	},
+		removeItem: function(key) {
 
-	getItem: function(key) {
+		},
 
-	},
+		setItemKey: function(key, newKey) {
 
-	removeItem: function(key) {
+		},
 
-	},
+		incrementItem: function(key) {
 
-	setItemKey: function(key, newKey) {
+		},
 
-	},
+		pushItem: function(key) {
 
-	incrementItem: function(key) {
+		},
 
-	},
+		clear: function() {
 
-	pushItem: function(key) {
-
-	},
-
-	clear: function() {
-
+		}
 	}
-}
+};
