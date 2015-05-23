@@ -6,18 +6,6 @@ module.exports = function(dir) {
 	var dir = dir || path.join(process.cwd(), 'storage');
 	mkdirp.sync(dir);
 	var file = path.join(dir, '_storage.json');
-	var dataObj = {};
-	Object.defineProperty(dataObj, "_keys", {
-		enumerable: false,
-		configurable: false,
-		writable: true,
-		value: []
-	});
-	fs.readFile(file, function(err, data) {
-		if (data != undefined) {
-			dataObj = JSON.parse(data);
-		}
-	});
 
 	var _isEmpty = function() {
 		return (dataObj["_keys"] === undefined);
@@ -27,9 +15,21 @@ module.exports = function(dir) {
 		if (_isEmpty()) {
 			return false;
 		} else {
-			return !(dataObj["_keys"][key] === undefined);
+			return (dataObj["_keys"].indexOf(key) > -1);
 		}
 	};
+
+	var _loadObj = function() {
+		try {
+			fs.statSync(file);
+			var data = fs.readFileSync(file)
+			if (data != undefined && data != "") {
+				dataObj = JSON.parse(data);
+			}
+		} catch(err) {
+			if (err.code != "ENOENT") throw err;
+		}
+	}
 
 	var _saveObj = function() {
 		var dataObjStr = JSON.stringify(dataObj);
@@ -37,6 +37,15 @@ module.exports = function(dir) {
 			if (err) throw err;
 		});
 	};
+
+	var dataObj = {};
+	Object.defineProperty(dataObj, "_keys", {
+		enumerable: false,
+		configurable: true,
+		writable: true,
+		value: []
+	});
+	_loadObj();
 
 	return {
 
@@ -49,13 +58,14 @@ module.exports = function(dir) {
 		},
 
 		getAll: function() {
+			_loadObj();
 			return dataObj;
 		},
 
 		setItem: function(key, value) {
 			if (_isEmpty()) {
 				dataObj["_keys"] = [key];
-			} else {
+			} else if (!_keyExists(key)) {
 				dataObj["_keys"].push(key);
 			}
 			dataObj[key] = value;
@@ -63,6 +73,7 @@ module.exports = function(dir) {
 		},
 
 		getItem: function(key) {
+			_loadObj();
 			return dataObj[key];
 		},
 
@@ -83,7 +94,7 @@ module.exports = function(dir) {
 		},
 
 		removeItem: function(key) {
-			if (keyExists) {
+			if (_keyExists(key)) {
 				delete dataObj["_keys"][key];
 				delete dataObj[key];
 				_saveObj();

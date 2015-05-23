@@ -22,7 +22,7 @@ suite("text-db", function() {
 			db.setItem(_keys[index], value);
 		});
 		var keys = db.getKeys();
-		keysAreEqual = true;
+		var keysAreEqual = true;
 		if (keys.length != _keys.length) {
 			keysAreEqual = false;
 		}
@@ -38,10 +38,31 @@ suite("text-db", function() {
 	test("getLength() returns correct length", function(done) {
 		var keys = ["test1", "test2", "test3"];
 		var value = "monkey";
-		keys.forEach(function(item, index) {
-			db.setItem(keys[index], value);
+		keys.forEach(function(key) {
+			db.setItem(key, value);
 		});
 		assert.equal(keys.length, db.getLength());
+		db.clear();
+		done();
+	});
+	test("setItem() doesn't push identical keys", function(done) {
+		var _keys = ["test1", "test1", "test2"];
+		var _uniqueKeys = ["test1", "test2"];
+		var value = "monkey";
+		_keys.forEach(function(key, index) {
+			db.setItem(key, value);
+		});
+		var keys = db.getKeys();
+		var keysAreEqual = true;
+		if (keys.length != _uniqueKeys.length) {
+			keysAreEqual = false;
+		}
+		keys.forEach(function(item, index) {
+			if (keys[index] != _uniqueKeys[index]) {
+				keysAreEqual = false;
+			}
+		});
+		assert.equal(true, keysAreEqual);
 		db.clear();
 		done();
 	});
