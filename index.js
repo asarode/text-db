@@ -1,8 +1,10 @@
-var fs = require('fs');
-var path = require('path');
+var fs 		= require('fs');
+var path 	= require('path');
+var mkdirp 	= require('mkdirp');
 
 module.exports = function(dir) {
 	var dir = dir || path.join(process.cwd(), 'storage');
+	mkdirp.sync(dir);
 	var file = path.join(dir, '_storage.json');
 	var dataObj = {};
 	Object.defineProperty(dataObj, "_keys", {
@@ -12,7 +14,9 @@ module.exports = function(dir) {
 		value: []
 	});
 	fs.readFile(file, function(err, data) {
-		dataObj = JSON.parse(data);
+		if (data != undefined) {
+			dataObj = JSON.parse(data);
+		}
 	});
 
 	var _isEmpty = function() {
