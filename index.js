@@ -15,28 +15,47 @@ module.exports = function(dir) {
 		dataObj = JSON.parse(data);
 	});
 
+	var _isEmpty = function() {
+		return (dataObj["_keys"] === undefined);
+	};
+
+	var _keyExists = function(key) {
+		if (_isEmpty()) {
+			return false;
+		} else {
+			return !(dataObj["_keys"][key] === undefined);
+		}
+	};
+
+	var _saveObj = function() {
+		var dataObjStr = JSON.stringify(dataObj);
+		fs.writeFile(file, dataObjStr, function(err) {
+			if (err) throw err;
+		});
+	};
+
 	return {
 
-		setStorageFile: function(pathToFile) {
-			file = pathToFile;
+		setStorageDir: function(dir) {
+			file = path.join(dir, '_storage.json');
 		},
 
 		getStorageFile: function() {
 			return file;
 		},
 
+		getAll: function() {
+			return dataObj;
+		},
+
 		setItem: function(key, value) {
-			if (dataObj["_keys"] === undefined) {
+			if (_isEmpty()) {
 				dataObj["_keys"] = [key];
 			} else {
 				dataObj["_keys"].push(key);
 			}
 			dataObj[key] = value;
-			var dataObjStr = JSON.stringify(dataObj);
-
-			fs.writeFile(file, dataObjStr, function(err) {
-				if (err) throw err;
-			});
+			_saveObj();
 		},
 
 		getItem: function(key) {
@@ -44,54 +63,32 @@ module.exports = function(dir) {
 		},
 
 		getKeys: function() {
-			return dataObj["_keys"].slice(0);
+			if (_isEmpty()) {
+				return [];
+			} else {
+				return dataObj["_keys"].slice(0);
+			}
 		},
 
 		getLength: function() {
-			return dataObj["_keys"].length;
+			if (_isEmpty()) {
+				return 0;
+			} else {
+				return dataObj["_keys"].length;
+			}
 		},
 
 		removeItem: function(key) {
-			delete dataObj[key];
+			if (keyExists) {
+				delete dataObj["_keys"][key];
+				delete dataObj[key];
+				_saveObj();
+			}
 		},
-
-		// incrementItem: function(key) {
-		// 	var value = dataObj[key];
-		// 	if (typeof value == "number") {
-		// 		value++;
-		// 	} else if (!(key in dataObj)) {
-		// 		throw new Error("Key doesn't exist.");
-		// 	} else {
-		// 		throw new Error("Can't increment non-number values.");
-		// 	}
-		// },
-
-		// decrementItem: function(key) {
-		// 	var value = dataObj[key];
-		// 	if (typeof value == "number") {
-		// 		value--;
-		// 	} else if (!(key in dataObj)) {
-		// 		throw new Error("Key doesn't exist.");
-		// 	} else {
-		// 		throw new Error("Can't increment non-number values.");
-		// 	}
-
-		// },
-
-		// pushItem: function(key, data) {
-		// 	var value = dataObj[key];
-		// 	if (value.prototype === Array) {
-		// 		value.push(data);
-		// 	} else if (!(key in dataObj)) {
-		// 		throw new Error("Key doesn't exist.");
-		// 	} else {
-		// 		throw new Error("Can't push item into non-array value.");
-		// 	}
-		// },
 
 		clear: function() {
 			dataObj = {};
-			dataKets = [];
+			dataObj["_keys"] = [];
 			fs.unlink(file, function(err) {
 				if (err) throw err;
 			});
