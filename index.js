@@ -49,7 +49,10 @@ module.exports = function(dir) {
 		},
 
 		clear: function() {
-
+			dataObj = {};
+			fs.unlink(file, function(err) {
+				if (err) throw err;
+			});
 		}
 	}
 };
