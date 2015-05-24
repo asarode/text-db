@@ -1,6 +1,7 @@
 var fs 		= require('fs');
 var path 	= require('path');
 var mkdirp 	= require('mkdirp');
+var rimraf	= require('rimraf');
 
 module.exports = function(dir) {
 	var dir = dir || path.join(process.cwd(), 'storage');
@@ -49,19 +50,36 @@ module.exports = function(dir) {
 
 	return {
 
-		setStorageDir: function(dir) {
-			file = path.join(dir, '_storage.json');
+		/*
+		 * Sets the directory to save the data file to. This will delete the 
+		 * current data file, but will copy over any saved data to the new file.
+		 */
+		setStorageDir: function(newDir) {
+			rimraf.sync(dir);
+			dir = newDir;
+			file = path.join(newDir, '_storage.json');
+			_saveObj();
 		},
 
+		/*
+		 * Returns a path to the file where data is being stored.
+		 */
 		getStorageFile: function() {
 			return file;
 		},
 
+		/*
+		 * Returns an object with all the key-value pairs. One field will 
+		 * be "_keys" which holds all the keys and is not enumerable.
+		 */
 		getAll: function() {
 			_loadObj();
 			return dataObj;
 		},
 
+		/*
+		 * Saves the given key-value pair to persistent file.
+		 */
 		setItem: function(key, value) {
 			if (_isEmpty()) {
 				dataObj["_keys"] = [key];
@@ -72,11 +90,18 @@ module.exports = function(dir) {
 			_saveObj();
 		},
 
+		/*
+		 * Returns the value for the given key. Returns undefined if key 
+		 * doesn't exist.
+		 */
 		getItem: function(key) {
 			_loadObj();
 			return dataObj[key];
 		},
 
+		/*
+		 * Returns an array with all the stored keys.
+		 */
 		getKeys: function() {
 			if (_isEmpty()) {
 				return [];
@@ -85,6 +110,9 @@ module.exports = function(dir) {
 			}
 		},
 
+		/*
+		 * Returns the number of keys stored.
+		 */
 		getLength: function() {
 			if (_isEmpty()) {
 				return 0;
@@ -93,6 +121,9 @@ module.exports = function(dir) {
 			}
 		},
 
+		/*
+		 * Removes the given key.
+		 */
 		removeItem: function(key) {
 			if (_keyExists(key)) {
 				delete dataObj["_keys"][key];
@@ -101,6 +132,9 @@ module.exports = function(dir) {
 			}
 		},
 
+		/*
+		 * Clears the stored data and deletes the file.
+		 */
 		clear: function() {
 			dataObj = {};
 			dataObj["_keys"] = [];

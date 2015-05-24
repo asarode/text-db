@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/asarode/text-db",
   "dependencies": {
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.3.4"
   },
   "devDependencies": {
     "mocha": "^2.2.5"

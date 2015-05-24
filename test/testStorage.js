@@ -7,6 +7,13 @@ suite("text-db", function() {
 		assert.equal("storage/_storage.json", db.getStorageFile());
 		done();
 	});
+	test("setStorageDir() switches to correct directory", function(done) {
+		db.setStorageDir("testDir");
+		assert.equal("testDir/_storage.json", db.getStorageFile());
+		db.setItem("hey", "hi");
+		db.setStorageDir("storage");
+		done();
+	});
 	test("setItem() and getItem() set and get correct data", function(done) {
 		var key = "test";
 		var value = "monkey";
@@ -22,16 +29,7 @@ suite("text-db", function() {
 			db.setItem(_keys[index], value);
 		});
 		var keys = db.getKeys();
-		var keysAreEqual = true;
-		if (keys.length != _keys.length) {
-			keysAreEqual = false;
-		}
-		keys.forEach(function(item, index) {
-			if (keys[index] != _keys[index]) {
-				keysAreEqual = false;
-			}
-		});
-		assert.equal(true, keysAreEqual);
+		assert.deepEqual(keys, _keys);
 		db.clear();
 		done();
 	});
@@ -53,16 +51,35 @@ suite("text-db", function() {
 			db.setItem(key, value);
 		});
 		var keys = db.getKeys();
-		var keysAreEqual = true;
-		if (keys.length != _uniqueKeys.length) {
-			keysAreEqual = false;
-		}
-		keys.forEach(function(item, index) {
-			if (keys[index] != _uniqueKeys[index]) {
-				keysAreEqual = false;
-			}
+		assert.deepEqual(keys, _uniqueKeys);
+		db.clear();
+		done();
+	});
+	test("getKeys() returns the correct keys", function(done) {
+		var _keys = ["test1", "test1", "test3"];
+		var _uniqueKeys = ["test1", "test3"];
+		var value = "monkey"
+		_keys.forEach(function(key) {
+			db.setItem(key, value);
 		});
-		assert.equal(true, keysAreEqual);
+		keys = db.getKeys();
+		assert.deepEqual(_uniqueKeys, keys);
+		db.clear();
+		done();
+	});
+	test("getAll() returns the right object", function(done) {
+		var keys = ["test1", "test2", "test3"];
+		var value = "monkey";
+		expectedObj = {
+			"_keys": keys
+		};
+		keys.forEach(function(key) {
+			db.setItem(key, value);
+			expectedObj[key] = value;
+		});
+
+		obj = db.getAll();
+		assert.deepEqual(expectedObj, obj);
 		db.clear();
 		done();
 	});
