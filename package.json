@@ -1,6 +1,6 @@
 {
   "name": "text-db",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A simple way to store persistent data for node cli tools.",
   "main": "index.js",
   "scripts": {
