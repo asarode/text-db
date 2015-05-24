@@ -7,7 +7,9 @@ A simple way to store persistent data for node cli tools.
 I wanted to make something that mimicked HTML5's localStorage API that I could use for Node CLI tools. You can use text-db as a simple way to store persistent key-value pairs. Not exactly what you're looking for? Here are a couple other repos that do similar things: [jsop](https://github.com/typicode/jsop), [node-store](https://github.com/alexkwolfe/node-store).
 
 ##Installing
-Just install it to your module's dependencies with `npm install text-db --save` and require it with `var db = require('text-db')(directory/to/store/files/in)`. Super simple. Text-db will make the directory if it doesn't exist.
+Just install it to your module's dependencies with `npm install text-db --save` and require it with 
+
+`var db = require('text-db')(directory/to/store/files/in)`. Super simple. Text-db will make the directory if it doesn't exist.
 
 ##Usage
 | Function                  | What it does                                                                                                                            |
