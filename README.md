@@ -9,7 +9,7 @@ I wanted to make something that mimicked HTML5's localStorage API that I could u
 ##Installing
 Just install it to your module's dependencies with `npm install text-db --save` and require it with 
 
-`var db = require('text-db')(directory/to/store/files/in)`. Super simple. Text-db will make the directory if it doesn't exist.
+`var db = require('text-db')(directory/to/store/files/in);`. Super simple. Text-db will make the directory if it doesn't exist.
 
 ##Usage
 | Function                  | What it does                                                                                                                            |
