@@ -4,7 +4,8 @@ var fs = require("fs");
 
 suite("text-db", function() {
 	test("getStorageFile() shows correct file", function(done) {
-		assert.equal("storage/_storage.json", db.getStorageFile());
+		var TMP = fs.existsSync('/tmp') ? '/tmp' : os.tmpDir();
+		assert.equal(TMP + "/text-db/storage/_storage.json", db.getStorageFile());
 		done();
 	});
 	test("setStorageDir() switches to correct directory", function(done) {
