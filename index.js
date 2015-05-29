@@ -4,8 +4,7 @@ var mkdirp 	= require('mkdirp');
 var rimraf	= require('rimraf');
 
 module.exports = function(dir) {
-	var TMP = fs.existsSync('/tmp') ? '/tmp' : os.tmpDir();
-	var dir = dir ? path.join(TMP, 'text-db', dir) : path.join(TMP, 'text-db', 'storage');
+	var dir = dir ? dir : 'storage';
 	mkdirp.sync(dir);
 	var file = path.join(dir, '_storage.json');
 
