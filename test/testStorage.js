@@ -1,16 +1,19 @@
 var assert = require("assert");
 var db = require("./../index")("storage");
 var fs = require("fs");
+var path = require("path");
 
 suite("text-db", function() {
 	test("getStorageFile() shows correct file", function(done) {
-		assert.equal("storage/_storage.json", db.getStorageFile());
+		var expectedPath = path.join(path.resolve(__dirname, ".."), 'storage', '_storage.json');
+		assert.equal(expectedPath, db.getStorageFile());
 		done();
 	});
 	test("setStorageDir() switches to correct directory", function(done) {
-		db.setStorageDir("testDir");
-		assert.equal("testDir/_storage.json", db.getStorageFile());
-		db.setItem("hey", "hi");
+		db.setStorageDir("testing");
+		var expectedPath = path.join('testing', '_storage.json');
+		assert.equal(expectedPath, db.getStorageFile());
+		db.clear();
 		db.setStorageDir("storage");
 		done();
 	});
