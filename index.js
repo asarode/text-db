@@ -5,7 +5,7 @@ var rimraf	= require('rimraf');
 
 module.exports = function(dir) {
 	var dir = dir ? dir : 'storage';
-	mkdirp.sync(dir);
+	mkdirp.sync(path.join(__dirname, dir));
 	var file = path.join(__dirname, dir, '_storage.json');
 
 	var _isEmpty = function() {
