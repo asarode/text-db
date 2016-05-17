@@ -1,4 +1,4 @@
-# text-db
+# text-db (Don't use this! I made it a whiiiile ago and have no plans on unjanking it.)
 ![Build Sticker](https://travis-ci.org/asarode/text-db.png?branch=master)
 
 A simple way to store persistent data for node cli tools.
